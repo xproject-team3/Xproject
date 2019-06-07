@@ -10,7 +10,7 @@ import sys
 #from cities.models import City
 
 #이미지 파일 위치
-src = "C:/rasp"
+src = "C:/Users/cheal/Desktop/Xproject-master/"
 
 
 def fileName():
