@@ -63,5 +63,3 @@ def echo_server(my_port):
 
 if __name__ == '__main__':
     echo_server(50011)   # 포트번호
-
-
