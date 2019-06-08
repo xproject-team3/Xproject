@@ -31,30 +31,32 @@ def echo_client(server_addr):
     sock.connect(server_addr)
     print('connected: ', sock.getpeername())
     while True:
-        message = sys.stdin.readline()
-        if message == '\n':
-            distance=[]  
-            ser.write("in".encode('utf-8'))
-            distance.append(float(ser.readline()))
-
-            if distance[0]<5 :
-                print('cam')
-                with picamera.PiCamera() as camera:
-                    camera.start_preview(fullscreen=False, window=(100, 20, 640, 480))
-                    camera.capture('/home/pi/tt/%s.jpg' % time2)
-                    camera.stop_preview()
-                capture_file_name = src + str(time2) + ".jpg" # 어떤 파일 형태로
-                file = open(capture_file_name, "rb")
+        #message = sys.stdin.readline()
+        #if message == '\n':
+            #distance=[]
+        ser.write("in".encode('utf-8'))
+        distance = float(ser.readline())
+        print(distance)
+        if distance < 5 :
+            print('cam')
+            with picamera.PiCamera() as camera:
+                camera.start_preview(fullscreen=False, window=(100, 20, 640, 480))
+                camera.capture('/home/pi/tt/%s.jpg' % time2)
+                camera.stop_preview()
+            capture_file_name = src + str(time2) + ".jpg" # 어떤 파일 형태로
+            file = open(capture_file_name, "rb")
+            data = file.read(8192)
+            while(data):
+                sock.send(data)
                 data = file.read(8192)
-                while(data):
-                    sock.send(data)
-                    data = file.read(8192)
-                file.close()
-                print("send finished")
+            file.close()
+            print("send finished")
+                #distance=[]
 	
 
     sock.close()
 
 if __name__ == '__main__':
     echo_client(('192.168.0.63',50011))
+
 
