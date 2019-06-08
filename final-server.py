@@ -4,12 +4,8 @@ import os
 import time
 import sys
 
-#import django
-#os.environ.setdefault("DJANGO_SETTINGS_MODULE", "citysearch_project.settings")
-#django.setup()
-#from cities.models import City
 
-#이미지 파일 위치
+#이미지 파일 저장 위치
 src = "C:/Users/cheal/Desktop/Xproject-master/"
 
 
@@ -22,7 +18,7 @@ def fileName():
     Hour = dte.tm_hour
     Min = dte.tm_min
     Sec = dte.tm_sec
-    imgFileName = src + str(Year) + '_' + str(Mon) + '_' + str(Day) + '_' + str(Hour) + '_' + str(Min)  + '.jpg'
+    imgFileName = src + str(Year) + '_' + str(Mon) + '_' + str(Day) + '_' + str(Hour) + '_' + str(Min) +'_'+str(Sec)+'.jpg'
     return imgFileName
 
 def echo_server(my_port):
@@ -31,45 +27,29 @@ def echo_server(my_port):
     sock.listen(5)   # 리스닝 수 = 5
     print('server started')
     while True:   # 프로세스가 죽을때 까지
+        i = 1
         conn, client_addr = sock.accept()  # 서버소켓에 클라이언트가 연결되면 클라이언트 소켓, 주소를 반환
         print('connected by', client_addr)  # 어떤 주소에서 연결되었는지 프린트
         try:
+            f = open(fileName(), 'wb')
             while True:
-                data = conn.recv(1024) #클라이언트로부터 1024바이트 만큼 데이터를 받아옴
-                if not data: break  # 소켓이 닫힐때 까지
-                print('server received', data.decode())
-                r_msg=data.decode()
-                s = r_msg.split()
-                db = sqlite3.connect('distance.db')
-                cursor = db.cursor()
+                print("1번")
+                data = conn.recv(4096)
+                if not data:
+                    print("2번구간")
+                    break
+                else:
+                    f.write(data)
+                i+=1
+                print(i)
 
-                # data type load
-                if(s[0][5:]=='load'): # 데이터타입이 load 이면
-                    datein=(s[1][5:]+" "+s[2])[:19] # 날짜와 초 단위까지나오게
-                    print(s)
-                    distance = s[4]
-                    cursor.execute("INSERT INTO DIS VALUES(?, ?);",(datein, distance))
-                    db.commit()
-                    msg = "server received\n"
-                    conn.send(msg.encode())
+                #f = open(fileName(), 'wb')
+                #continue
 
-                    img_fileName = fileName()
-                    img_file = open(img_fileName, "wb")
-                    print("finish img recv")
-                    print(sys.getsizeof(data))
-                    img_file.write(data)
-                    img_file.close()
-                    print("Finish ")
-                #City(name=distance, state=datein).save()
 
-                if img_data:
-                    while img_data:
-                        print("recving Img...")
-                        img_data = conn.recv(1024)
-                        data += img_data
-                    else:
-                        break
-                db.close()
+
+
+
 
         # Exception Handling
         except OSError as e:
