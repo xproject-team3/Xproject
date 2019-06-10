@@ -26,18 +26,14 @@ time2 = str(Year)+"_"+str(Mon)+"_"+str(Day)+"_"+str(Hour)+"_"+str(Min)  #파일�
 
 
 def echo_client(server_addr):
-    i = 1
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect(server_addr)
     print('connected: ', sock.getpeername())
     while True:
-        #message = sys.stdin.readline()
-        #if message == '\n':
-            #distance=[]
         ser.write("in".encode('utf-8'))
         distance = float(ser.readline())
         print(distance)
-        if distance < 5 :
+        if distance < 20 :
             print('cam')
             with picamera.PiCamera() as camera:
                 camera.start_preview(fullscreen=False, window=(100, 20, 640, 480))
@@ -51,7 +47,7 @@ def echo_client(server_addr):
                 data = file.read(8192)
             file.close()
             print("send finished")
-                #distance=[]
+            
 	
 
     sock.close()
