@@ -6,7 +6,7 @@ import sys
 
 
 #이미지 파일 저장 위치
-src = "C:/Users/cheal/Desktop/Xproject-master/"
+src = "C:/Users/cheal/AndroidStudioProjects/xproject/app/src/main/res/drawable/"
 
 
 def fileName():
@@ -18,7 +18,7 @@ def fileName():
     Hour = dte.tm_hour
     Min = dte.tm_min
     Sec = dte.tm_sec
-    imgFileName = src + str(Year) + '_' + str(Mon) + '_' + str(Day) + '_' + str(Hour) + '_' + str(Min) +'_'+str(Sec)+'.jpg'
+    imgFileName = src +'d'+ str(Year) + '_' + str(Mon) + '_' + str(Day) + '_' + str(Hour) + '_' + str(Min) +'.jpg'
     return imgFileName
 
 def echo_server(my_port):
@@ -27,24 +27,22 @@ def echo_server(my_port):
     sock.listen(5)   # 리스닝 수 = 5
     print('server started')
     while True:   # 프로세스가 죽을때 까지
-        i = 1
         conn, client_addr = sock.accept()  # 서버소켓에 클라이언트가 연결되면 클라이언트 소켓, 주소를 반환
         print('connected by', client_addr)  # 어떤 주소에서 연결되었는지 프린트
         try:
             f = open(fileName(), 'wb')
+
             while True:
-                print("1번")
                 data = conn.recv(4096)
                 if not data:
-                    print("2번구간")
                     break
                 else:
                     f.write(data)
-                i+=1
-                print(i)
-    f.close()
-                #f = open(fileName(), 'wb')
-                #continue
+            f.close()
+            file = open(src + 'fileName.txt', 'a')
+            file.write(time.ctime() + '\n')
+            file.close()
+
 
 
 
