@@ -42,7 +42,7 @@ def echo_server(my_port):
                     f.write(data)
                 i+=1
                 print(i)
-
+    f.close()
                 #f = open(fileName(), 'wb')
                 #continue
 
