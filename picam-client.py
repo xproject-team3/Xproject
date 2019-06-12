@@ -1,12 +1,9 @@
-import sys , socket
+import socket
 import serial
-import datetime
-import os
 import time
 import picamera
-import shutil
 
-port = "/dev/ttyACM0"
+port = "/dev/ttyACM0"  #아두이노의 포트
 ser = serial.Serial(port,9600)
 ser.flushInput()
 
@@ -30,23 +27,23 @@ def echo_client(server_addr):
     sock.connect(server_addr)
     print('connected: ', sock.getpeername())
     while True:
+
         ser.write("in".encode('utf-8'))
         distance = float(ser.readline())
         print(distance)
-        if distance < 20 :
-            print('cam')
-            with picamera.PiCamera() as camera:
+        if distance < 20 and distance >4:
+            print('cam')  # 사진 촬영시 cam 이라고 print
+            with picamera.PiCamera() as camera: #context관리를 자동으로 해주는 with 사용
                 camera.start_preview(fullscreen=False, window=(100, 20, 640, 480))
-                camera.capture('/home/pi/tt/%s.jpg' % time2)
+                camera.capture('/home/pi/tt/%s.jpg' % time2) # 라즈베리파이의 tt폴더에 저장
                 camera.stop_preview()
             capture_file_name = src + str(time2) + ".jpg" # 어떤 파일 형태로
-            file = open(capture_file_name, "rb")
-            data = file.read(8192)
+            file = open(capture_file_name, "rb")  # 전달할 사진을 바이너리 형식으로 읽음
+            data = file.read(8192)  #1KB를 읽음
             while(data):
-                sock.send(data)
-                data = file.read(8192)
-            file.close()
-            print("send finished")
+                sock.send(data) # 데이터 전송
+                data = file.read(8192) #1KB씩 읽음
+            print("send finished")  # 서버에 전송 되었을때 send finished 라고 전송
             
 	
 
@@ -54,5 +51,8 @@ def echo_client(server_addr):
 
 if __name__ == '__main__':
     echo_client(('192.168.0.63',50011))
+
+
+
 
 
