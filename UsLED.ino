@@ -24,22 +24,12 @@ void loop() {
   unsigned long duration = pulseIn(Echo, HIGH);
   float distance = ((float)(340*duration) / 10000) / 2;
   
-  Serial.println(distance);
+  Serial.println(int(distance));
   //Serial.println("cm");
   
-  if(distance <= 5) {
+  if(distance < 20) {
     digitalWrite(led_R, HIGH);
-    digitalWrite(led_G, LOW);
-    digitalWrite(led_B, LOW);
-  }
-  else if(distance <= 10) {
-    digitalWrite(led_R, LOW);
     digitalWrite(led_G, HIGH);
-    digitalWrite(led_B, LOW);
-  }
-  else if(distance <= 15) {
-    digitalWrite(led_R, LOW);
-    digitalWrite(led_G, LOW);
     digitalWrite(led_B, HIGH);
   }
   else {
