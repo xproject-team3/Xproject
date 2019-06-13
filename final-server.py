@@ -23,7 +23,7 @@ def fileName(x):
     elif x=='b':
         return textFile
 
-def echo_server(my_port):
+def server(my_port):
     sock = socket(AF_INET, SOCK_STREAM)  # 소켓 객체를 생성
     sock.bind(('192.168.0.63', my_port)) # 소켓객체에 주소값을 바인딩 시킴 호스트와 포트로 된 튜플값을 인자로 받음
     sock.listen(5)   # 리스닝 수 = 5
@@ -63,6 +63,6 @@ def echo_server(my_port):
             conn.close()
 
 if __name__ == '__main__':
-    echo_server(50011)   # 포트번호
+    server(50011)   # 포트번호
 
 
