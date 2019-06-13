@@ -22,7 +22,7 @@ time2 = str(Year)+"_"+str(Mon)+"_"+str(Day)+"_"+str(Hour)+"_"+str(Min)  #파일�
 
 
 
-def echo_client(server_addr):
+def client(server_addr):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect(server_addr)
     print('connected: ', sock.getpeername())
@@ -50,7 +50,7 @@ def echo_client(server_addr):
     sock.close()
 
 if __name__ == '__main__':
-    echo_client(('192.168.0.63',50011))
+    client(('192.168.0.63',50011))
 
 
 
